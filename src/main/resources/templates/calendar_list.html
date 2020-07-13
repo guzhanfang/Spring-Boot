@@ -1,0 +1,192 @@
+#options (
+    import = "java.lang.*",
+    import = "java.util.*",
+    import = "com.bluefrog.wx.bean.*",
+    safecall = true
+)
+<!doctype html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>${obj.calendarBook.title?!''}</title>
+<meta name="MobileOptimized" content="320"/>
+<meta http-equiv="cleartype" content="on">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="format-detection" content="telephone=no, email=no"/>
+<meta name="msapplication-tap-highlight" content="no"/>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link href="../css/rili_css/tongyong.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery-1.8.3.min.js"></script>
+<style type="text/css">
+     *{margin: 0; padding: 0;outline:none;-webkit-tap-highlight-color: rgba(0,0,0,0);}
+    html, body { position: relative;-webkit-overflow-scrolling:touch;background: #f2f2f2;} 
+    body {font-size: 14px;color:#000; margin: 0; padding: 0;max-width: 780px;margin: 0 auto;} 
+    .page{width: 100%;height: auto;background: #f2f2f2;}
+    
+    /* 顶部样式 */
+    .top_img{width: 100%;height: auto;overflow: hidden;}
+    .top_img img{width: 100%;height: 164px;display: block;border: none;}
+    /* 活动介绍 */
+    .hd_js{width: 100%;height: auto;box-sizing: border-box;padding: 15px 20px;background: #fff;margin: 10px 0;box-shadow: 0px 2px 4px 0px rgba(170,170,170,0.5) }
+    .hd_js h3{font-size:16px; font-family:PingFangSC-Regular; color:rgba(77,77,77,1); line-height:22px;margin-bottom: 5px;}
+    .hd_js p{font-size:12px; font-family:PingFangSC-Regular; color:rgba(170,170,170,1); line-height:18px;}
+    /* 列表页面 */
+    .lis_bok{width: 100%;height: auto;box-sizing: border-box;}
+    /* 有图书籍 */
+    .lis_six{width: 100%;height: auto;box-sizing: border-box;margin-bottom: 10px;background: #fff;padding: 0 20px;box-shadow:0 2px 4px 0 rgba(170,170,170,0.15);}
+    .lis_six .list_li{display: flex;border-bottom: 2px solid #ccc;box-sizing: border-box;padding: 20px 0 10px 0;position: relative;}
+    .lis_six .list_li:last-child{border: none;}
+    .lis_six .list_li .left_img{flex: 2;margin-right: 10px;;}
+    .lis_six .list_li .left_img img{width: 74px;height: auto;}
+    .lis_six .list_li .center_con{flex: 8;text-align: left;}
+    .lis_six .list_li .center_con .book_name{width: 210px;font-size: 16px;font-weight: bold;color: rgba(0,0,0,1);margin-bottom: 10px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+    .lis_six .list_li .center_con .book_jj{width: 80%; font-size:13px; font-family:PingFangSC-Regular; color:rgba(0,0,0,1); line-height:17px;text-overflow:ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;letter-spacing: 1px;}
+    .lis_six .list_li .center_con .bk_sc{font-size: 12px;color: #808080;position: absolute;bottom: 12%;}
+    .lis_six .list_li .bf_anu{width:68px;height: 22px;line-height: 22px; text-align: center;background: #daac71;display: inline-block;color: #fff;font-size: 12px;border-radius: 14px;padding: 2px 10px;position: absolute;right: 0;bottom: 8%;}
+    .lis_six .list_li  .bf_anu{width:68px;height: 22px;line-height: 22px; text-align: center;background:#daac71;display: inline-block;color: #fff;font-size: 12px;border-radius: 14px;padding: 2px 10px;position: absolute;right: 0;bottom: 8%;}
+    /* 无图书籍 */
+    .modle_m{width: 100%;height: auto;box-sizing: border-box;}
+    .modle_m h3{font-family:PingFangSC-Semibold; font-size:17px; color:#4a4a4a; text-align:left;font-weight: bold;letter-spacing: 1px;line-height: 36px;}
+    .mk_logo{width: 100%;height: auto;margin-bottom: 3px;}
+    .mk_logo img{width: 100%;height: 120px;display: block;border: none;}
+</style>
+#if(obj.isWeiXin == 1)
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+var audioId = 0;
+var title = "${obj.book.booklist_title?!''}";
+var link = "${obj.link}";
+var imgUrl = "${obj.book.booklist_image_url_two?!''}";
+//var desc = "${obj.desc}";
+var type = "link";
+var dataUrl = "";//"${obj.dataUrl}";
+
+wx.config({
+	debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+	appId: "${obj.appId?!''}", // 必填，公众号的唯一标识
+	timestamp: "${obj.timestamp?!''}", // 必填，生成签名的时间戳
+	nonceStr: "${obj.nonceStr?!''}", // 必填，生成签名的随机串
+	signature: "${obj.signature?!''}", // 必填，签名，见附录1
+	jsApiList: [ 
+	            'checkJsApi', 
+	            'onMenuShareTimeline', 
+	            'onMenuShareAppMessage', 
+	            'onMenuShareQQ',  
+	            'onMenuShareWeibo', 
+	            'onMenuShareQZone', 
+	            'hideMenuItems', 
+	            'showMenuItems', 
+	            'hideAllNonBaseMenuItem', 
+	            'showAllNonBaseMenuItem', 
+	            'translateVoice', 
+	            'startRecord', 
+	            'stopRecord', 
+	            'onVoiceRecordEnd', 
+	            'playVoice', 
+	            'onVoicePlayEnd', 
+	            'pauseVoice', 
+	            'stopVoice', 
+	            'uploadVoice', 
+	            'downloadVoice'
+	            ]  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2 ngrok
+});
+
+wx.ready(function(){
+	
+    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+	var audioId =  '${obj.cbr_id}';
+	
+	//分享到朋友圈
+	wx.onMenuShareTimeline({
+	    title: title, // 分享标题
+	    link: link, // 分享链接，该链接域名必须与当前企业的可信域名一致
+	    imgUrl:imgUrl , // 分享图标
+	    dataUrl: dataUrl,
+	    success: function () {
+	        // 用户确认分享后执行的回调函数
+	    	 // $.post("zhuanfa",{"id":audioId},function(data){console.log("转发成功！")});
+	    },
+	    cancel: function () {
+	        // 用户取消分享后执行的回调函数
+	    }
+	});
+	
+	//分享到朋友
+	wx.onMenuShareAppMessage({
+	    title: title, // 分享标题
+	    desc: "${obj.book.booklist_title_vice?!''}", // 分享描述
+	    link: link, // 分享链接，该链接域名必须与当前企业的可信域名一致
+	    imgUrl:imgUrl, // 分享图标
+	    type: type, // 分享类型,music、video或link，不填默认为link
+	    dataUrl: dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
+	    success: function () {
+	        // 用户确认分享后执行的回调函数
+	        // $.post("zhuanfa",{"id":audioId},function(data){console.log("转发成功！")});
+	    },
+	    cancel: function () {
+	        // 用户取消分享后执行的回调函数
+	    }
+	});
+});
+</script>
+#end
+</head>
+<body style="background-color: #fff; /*[disabled]min-width:320px;*/">
+<div class="page">
+    <div class="wrap" style="min-width:320px;">
+        <div class="top_img">
+            <img src="${obj.calendarBook.image_url?!''}" alt="">
+        </div>
+        <div class="hd_js">
+            <h3>系列介绍：</h3>
+            <p>${obj.calendarBook.introduce?!''}</p>
+        </div>
+        <div class="lis_bok cf">
+           #if(obj.OK)
+            <ul class="lis_six">
+            	#if(obj.bookList!=null && obj.bookList!="undefined")
+                #for(TopCalendarBookListRecord list : obj.bookList?!'')
+                <li class="list_li" id="${list.resource_id?!''}">
+                    <div class="left_img">
+                        <img src="${list.book_img?!''}" alt="">
+                    </div>
+                    <div class="center_con">
+                        <p class="book_name">${list.resource_name?!''}</p>
+                        <p class="book_jj">${list.resource_content?!''}</p>
+                    </div>
+                    <a href="javascript:;" class="bf_anu">播放</a>
+                </li>
+                #end
+                #end
+            </ul>
+            #end
+        </div>
+        
+        
+    </div>
+</div>
+<script>
+    $('.list_li').on('click',function(){
+    	var id = $(this).attr("id");
+    	if(id!=null){
+			window.location.href = "ArticleDetails?id="+id;    		
+    	}; 
+    });
+</script>
+</body>
+</html>
+<script>
+var _mtac = {};
+(function() {
+    var mta = document.createElement("script");
+    mta.src = "http://pingjs.qq.com/h5/stats.js?v2.0.2";
+    mta.setAttribute("name", "MTAH5");
+    mta.setAttribute("sid", "500606355");
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(mta, s);
+})();
+</script>

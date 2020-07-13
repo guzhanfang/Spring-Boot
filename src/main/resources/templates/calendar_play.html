@@ -1,0 +1,407 @@
+#options (
+    import = "java.lang.*",
+    import = "java.util.*",
+    import = "com.bluefrog.wx.bean.*",
+    safecall = true
+)
+<!doctype html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>今今乐道</title>
+<meta name="MobileOptimized" content="320"/>
+<meta http-equiv="cleartype" content="on">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="format-detection" content="telephone=no, email=no"/>
+<meta name="msapplication-tap-highlight" content="no"/>
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link href="../css/tongyong.css" rel="stylesheet" type="text/css">
+<script src="../js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" href="../css/play-mp3.css" type="text/css">
+<style type="text/css">
+    *{margin: 0; padding: 0;outline:none;-webkit-tap-highlight-color: rgba(0,0,0,0);}
+    html, body { position: relative;-webkit-overflow-scrolling:touch;background: #fff;overflow-x:hidden;} 
+    body {font-size: 14px;color:#000; margin: 0; padding: 0;max-width: 780px;margin: 0 auto;} 
+    .page{width: 100%;height: auto;background: #fff;}
+    /* 有图书籍 */
+    .lis_bok{width: 100%;height: auto;box-sizing: border-box;padding: 30px 20px;background: #fff;}
+    .lis_six{width: 100%;height: auto;box-sizing: border-box;}
+    .top_book{display: flex;box-sizing: border-box;position: relative;}
+    .top_book .left_img{flex: 2;margin-right: 15px;;}
+    .top_book .left_img img{width: 90px;height: auto;}
+    .top_book .center_con{flex: 8;text-align: left;}
+    .top_book .center_con .book_name{width: 200px;font-size: 16px;font-weight: bold;color: rgba(0,0,0,1);margin-bottom: 15px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
+    .top_book .center_con .book_zz{width: 80%; font-size:13px; font-family:PingFangSC-Regular; color:rgba(0,0,0,1); line-height:17px;}
+    .top_book .center_con .bk_sc{font-size: 12px;color: #808080;position: absolute;bottom: 10%;text-overflow:ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;overflow: hidden;letter-spacing: 1px;}
+    
+    
+	.bottom_vip{width: 100%;height: auto;box-sizing: border-box;}
+    .bottom_vip .hy_mk{width: 100%;height: auto;box-sizing: border-box;padding: 12px 0; margin-top: 20px;margin-bottom: 12px;}
+    .bottom_vip .hy_mk .hx_vp{line-height: 32px;margin-bottom: 5px;position: relative;margin-bottom: 10px;padding: 0 20px;box-sizing: border-box;}
+    .bottom_vip .hy_mk .hx_vp a{display: inline-block;text-align: center;border-radius: 16px;}
+  /*   .bottom_vip .hy_mk .hx_vp a img{width: 100%;height: auto;display: block;} */
+    /* .hy_yx{position: absolute; right: 10px; top: 16%; width: 80px; height: auto;} */
+	.j_ge{font-size:14px;float:left;}
+	.j_ge i{color:#cc9966;}
+	.cw_hy{float:right;line-heiht:32px;width:auto;heiht:auto;color:#fff;background:#cc9966;padding:0 10px;}
+
+    .mk_ss{width: 100%;height: auto;padding: 0 20px;box-sizing: border-box;}
+    .mk_ss h3{font-size: 18px;font-family:PingFangSC-Regular;color: #4D4D4D;font-weight: bold;line-height: 22px; margin-bottom: 10px;}
+    .mk_ss p{font-size:14px; font-family:PingFangSC-Regular; color:#9F9F9F; line-height:20px;}
+
+    .nr_cont{width: 100%;height: auto;padding: 0 20px;box-sizing: border-box;}
+    .nr_cont img{width:100%;height:auto;display:block;border:none;}
+    .nr_cont p{font-size:14px; font-family:PingFangSC-Regular; color:rgba(159,159,159,1); line-height:20px;}
+    .nr_cont .wz_nr{margin-top: 15px;}
+
+    .tc_cw3{width: 100%;height: 100%;box-sizing: border-box;background: rgba(0,0,0,0.5);position: fixed;left: 0;top: 0;z-index: 9999;padding: 0 30px;}
+    .tc_cw3 .tc_con3{width: 100%;height: auto;padding: 20px 14px; box-sizing: border-box; background: #fff;position: relative;top: 190px;border-radius: 5px;}
+    .tc_cw3 .tc_con3 .p1{text-align: center; color: #4a4a4a;font-size: 16px;line-height: 24px;font-weight: 520;margin-bottom: 20px;}
+    .tc_cw3 .tc_con3 .shuru{width: 100%;height: auto;box-sizing: border-box;}
+    .box{width: 100%;height: auto;position: relative;line-height: 30px;margin-bottom: 10px;}
+    .box span{font-size: 13px;width: 25%; display: inline-block;}
+    .span_phone{background: url(../images/phone_sj.png) left center no-repeat;background-size: 15px auto;padding-left: 25px;box-sizing: border-box;}
+    .span_yanz{background: url(../images/yanzheng_ma.png) left center no-repeat;background-size: 18px auto;padding-left: 25px;box-sizing: border-box;}
+    .btn_bord{border-bottom: 1px solid #ccc; display: flex;}
+    .box input{width: 70%;display: inline-block;}
+    .del_sc{position: absolute;right: 5px;color: #000;display: inline-block;}
+    .del_sc img{width: 10px;height: auto;display: inline;}
+    .fasong{position: absolute;right: 5px;color: #000;display: inline-block;font-size: 12px; color: #daac71;padding-left: 10px;}
+    .box .fasong.false{color:#000;}
+    .qed{width: 90%;height: 36px;line-height: 36px; display:block;text-align: center; color: #fff;font-weight: 500;background: #daac71;margin: 0 auto;border-radius: 8px;margin-top: 30px;margin-bottom: 10px;}
+    .tishi{width: auto;font-size:12px; color:#F00; display:none;position: absolute;right: 0px;bottom: 30px;}
+    ::-webkit-input-placeholder { /* WebKit browsers */
+    color:#6666;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:#6666;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:#6666;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:#6666;
+    }
+    .close_gb{width: 100%;height: auto;display: inline-block;position: absolute;bottom: -50px;left: 0;}
+    .close_gb img{width: 20px;height: auto;display: block;margin: 0 auto;}
+    .nr_cont .sjtw{font-size:18px;margin-top:25px;font-weight: bold;color:#000;line-height:24px;}
+    .nr_cont .sjtw i{display:inline-block;width:3px;height:18px;margin-bottom:-3px;background:#5198EE;border-radius: 1px;margin-right:5px;}
+    .timeline span{background-color: #daac71;}
+    .new-btn-wrapper { width: 100%;margin-top:30px;}
+	.rel {position: relative;}
+ 	.new-btn-wrapper .new-btn {margin: 0 auto;width: 200px;height: 42px;line-height: 42px;background-image: linear-gradient(-269deg,#cc9966 2%,#54a0ff 99%);box-shadow: 0 0 5px 0 rgba(0,0,0,.2);font-size: 15px;color: #fff;border-radius: 100px;}
+	.pop-run2 {transform: translate3d(0,0,0);animation: popopen 1.2s infinite alternate linear;}
+	.tctwo {text-align: center;}
+	.block {display: block!important;}
+	.pop-run2{transform:translate3d(0,0,0);animation:popopen 1.2s infinite alternate linear;}
+	.pop-run{transform:translate3d(0,0,0);animation:popopen .4s infinite alternate linear;}
+    .tc_cw3 .tc_con3 .close_gb{width: 100%;height: auto;display: inline-block;position: absolute;bottom: -50px;left: 0;}
+    .tc_cw3 .tc_con3 .close_gb span{width: 20px;height: auto;display: block;margin: 0 auto;}
+    .tc_cw3 .tc_con3 .close_gb img{width: 20px;height: auto;display: block;margin: 0 auto;}
+    @keyframes popopen{0%{transform:scale(1,1)}100%{transform:scale(1.08,1.08)}}
+	@-moz-keyframes popopen{0%{transform:scale(1,1)}100%{transform:scale(1.08,1.08)}}
+	@-webkit-keyframes popopen{0%{transform:scale(1,1)}100%{transform:scale(1.08,1.08)}}
+	.progress{background-color:rgba(248,238,227,0.3);}
+	.timeline{background-color:rgba(248,238,227,0.5);}
+</style>
+#if(obj.isWeiXin == 1)
+<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+	var audioId = 0;
+	//var title = "${obj.title?!''}";
+	var link = "${obj.link}";
+	//var imgUrl = "${obj.imgUrl}";
+	//var desc = "${obj.desc}";
+	var type = "link";
+	var dataUrl = "";//"${obj.dataUrl}";
+	
+	
+	wx.config({
+		debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+		appId: "${obj.appId?!''}", // 必填，公众号的唯一标识
+		timestamp: "${obj.timestamp?!''}", // 必填，生成签名的时间戳
+		nonceStr: "${obj.nonceStr?!''}", // 必填，生成签名的随机串
+		signature: "${obj.signature?!''}", // 必填，签名，见附录1
+		jsApiList: [ 
+		            'checkJsApi', 
+		            'onMenuShareTimeline', 
+		            'onMenuShareAppMessage', 
+		            'onMenuShareQQ',  
+		            'onMenuShareWeibo', 
+		            'onMenuShareQZone', 
+		            'hideMenuItems', 
+		            'showMenuItems', 
+		            'hideAllNonBaseMenuItem', 
+		            'showAllNonBaseMenuItem', 
+		            'translateVoice', 
+		            'startRecord', 
+		            'stopRecord', 
+		            'onVoiceRecordEnd', 
+		            'playVoice', 
+		            'onVoicePlayEnd', 
+		            'pauseVoice', 
+		            'stopVoice', 
+		            'uploadVoice', 
+		            'downloadVoice'
+		            ]  // 必填，需要使用的JS接口列表，所有JS接口列表见附录2 ngrok
+	});
+	
+	wx.ready(function(){
+		
+	    // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+		var audioId =  '${obj.cbr_id}';
+		
+		//分享到朋友圈
+		wx.onMenuShareTimeline({
+		    title: "${obj.ccif.cooperation_title?!''}", // 分享标题
+		    link: link, // 分享链接，该链接域名必须与当前企业的可信域名一致
+		    imgUrl: "${obj.ccif.cooperation_image?!''}" , // 分享图标
+		    dataUrl: dataUrl,
+		    success: function () {
+		        // 用户确认分享后执行的回调函数
+		    	 // $.post("zhuanfa",{"id":audioId},function(data){console.log("转发成功！")});
+		    },
+		    cancel: function () {
+		        // 用户取消分享后执行的回调函数
+		    }
+		});
+		
+		//分享到朋友
+		wx.onMenuShareAppMessage({
+		    title: "${obj.ccif.cooperation_title?!''}", // 分享标题
+		    desc: "30本书免费听", // 分享描述
+		    link: link, // 分享链接，该链接域名必须与当前企业的可信域名一致
+		    imgUrl: "${obj.ccif.cooperation_image?!''}", // 分享图标
+		    type: type, // 分享类型,music、video或link，不填默认为link
+		    dataUrl: dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
+		    success: function () {
+		        // 用户确认分享后执行的回调函数
+		        // $.post("zhuanfa",{"id":audioId},function(data){console.log("转发成功！")});
+		    },
+		    cancel: function () {
+		        // 用户取消分享后执行的回调函数
+		    }
+		});
+	});
+</script>
+#end
+</head>
+<body style="background-color: #fff; /*[disabled]min-width:320px;*/">
+<div style="display:none"><p id="shortTitle" style="display:none;">30天30本书免费听</p>
+<img src="http://dgtt.besttoptoday.com/column/20184/AM6Z3iKhBt.jpg" style="display:none;" id="picture"></div>
+<div class="page">
+    <div class="wrap" style="min-width:320px;">
+        <!-- top书籍信息 -->
+        <div class="lis_bok">
+            <div class="top_book">
+                <div class="left_img">
+                    <img src="${obj.book.book_img?!''}" alt="">
+                </div>
+                <div class="center_con">
+                    <p class="book_name">${obj.book.resource_name?!''}</p>
+                    <p class="bk_sc">${obj.book.resource_content?!''}</p>
+                </div>
+            </div>
+        </div>
+        <!-- 播放器 -->
+        <div class="content">
+            <div class='jAudio--player'>
+                <audio id="audio" style="display:none;">
+                    <source src="${obj.book.audioTxt.audio_file_url}">你的浏览器不支持audio标签。
+                </audio>
+                <div class='jAudio--ui'>
+                    <button class='buttn'>
+                        <div class="jiazai keyi" style="display:none;">
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <img src="../images/audio_play.png" alt="" id="mbtn">
+                    </button>
+                    <div class='jAudio--status-bar'>
+                        <div class='jAudio--progress-bar'>
+                            <div class='jAudio--progress-bar-wrapper' style="background: rgba(255,255,255,0);">
+                                <i class="progress"></i>
+                                <div class='timeline '>
+                                    <span class=''></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='jAudio--time'>
+                            <span class='jAudio--time-elapsed size'>00:00</span>
+                            <span class='jAudio--time-total timeshow'></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="new-btn-wrapper rel" >
+			<a class="new-btn goCopy block btn-openApp btn-dload tctwo pop-run2">下载今今乐道APP</a>
+			<p style="width:100%;text-align:center;margin-top:10px;color:#999">收听千余企业内训书籍</p>
+        </div>
+        <style>
+		/* 提示下载 calc(0.65rem*1.6)*/	
+		.tc{ width:100%; height:65px; background-color:#636876; position:fixed; top:0; left:0; opacity:0.9; z-index:999;display:none;}
+		.tc_con{ width:100%; height:65px; position:fixed; left:0; top:0; z-index:999;display:none;}
+		.tc_con .logo{ width:50px; height:50px; float:left; margin:8px; background:url(http://imgcdn.besttoptoday.com/bluepencil/u/cms/tz/201905/28140132ob7m.png) no-repeat 0 0; background-size:100% auto;border-radius: 8px;}
+		.tc_con .center{ float:left; width:auto; height:10px; box-sizing:border-box; padding-left:5px;}
+		.tc_con .center h2{ font-size:16px; line-height:22px; color:#fff; font-weight:normal; padding-top:10px;padding-bottom: 5px;}
+		.tc_con .center p{ font-size:12px;color:#fff;opacity: 0.66;}
+		.tc_con .open{width: 56px;height: 28px;text-align: center; font-size: 15px;line-height: 28px;color: #fff;border-radius: 8px;position: absolute;top:0; bottom:0;right: 10px;letter-spacing: 1px;border: 1px solid #fff;margin-top: auto;margin-bottom: auto;}
+		</style>
+        <div class="tc" style=""></div>
+		<div class="tc_con" style="">
+		    <div class="logo"></div>
+		    <div class="center">
+		        <h2>今今乐道读书会</h2>
+		        <p style="letter-spacing: 3px;">影响有影响力的人</p>
+		    </div>
+		    <a href="javascript:;" class="open" id="btnOpenApp">下载</a>
+		</div>
+        <!-- 成为会员 -->
+        <div class="bottom_vip">
+            <!-- 文稿内容 -->
+            <div class="nr_cont">
+                <p class="sjtw"><i></i>书籍图文:</p>
+                <p class="wz_nr">
+                	${obj.content?!''}
+                </p>
+            </div>
+        </div>
+        <!-- 尾部 -->
+    </div>
+</div>
+<script>
+	$('.tc_con').show();
+	$('.tc').show();
+	$('.page').css("margin-top","65px");
+	//判断该页面是否在微信上？
+	function is_weixn(){
+	    var ua = navigator.userAgent.toLowerCase();
+	    if(ua.match(/MicroMessenger/i)=="micromessenger") {//alert(1);
+	        return true;
+	    } else {//alert(2)
+	        return false;
+	    };
+	};
+    
+    
+    //播放器部分
+    music=document.getElementById("audio");
+    kshc = null;
+    //可播放状态
+    music.addEventListener("canplay", function(){
+        setInterval(function(){
+            $('.keyi').hide();
+        },300);
+    });
+    //缓存条
+    function getFirstBuffRange(){ 
+        var timeRanges = music.buffered;
+        var timeBuffered = timeRanges.end(timeRanges.length - 1);
+        var bufferPercent = 100*timeBuffered / music.duration; 
+        $('.progress').css({width:bufferPercent+"%"});
+        console.log("www");
+    };
+    //音频播放完毕
+    var jdts=null;
+    music.loop = false;
+    music.addEventListener('ended',function(){  
+        music.pause();    
+        $("#mbtn").attr("src","../images/audio_play.png");
+        clearInterval(jdts);
+        $(".size").html('00:00');
+        $('.timeline').children().css({width:0+"%"});
+    }, false);
+    //播放暂停事件
+    $("#mbtn").click(function(){
+        if(music.paused){
+            $('.keyi').show();
+            music.play();
+            kshc = setInterval(function(){
+                getFirstBuffRange();
+            },1000);
+            $("#mbtn").attr("src","../images/audio_parse.png");   
+            isPausedForAudio();
+            jdts = setInterval(function(){
+                var currentTime = music.currentTime;
+                setTimeShow(currentTime);
+            },1000);
+        }else{  
+            clearInterval(kshc);
+            music.pause(); 
+            clearInterval(jdts);
+            $("#mbtn").attr("src","../images/audio_play.png");    
+            isPausedForAudio();
+        };
+    });
+    //判断播放暂停
+    function isPausedForAudio(){var flag=false;if(music.paused)flag=true;};  
+    //进度条
+    AudioControl('audio');
+    function AudioControl(id){
+        // 音频控制进度条
+        var audio = document.getElementById(id);
+        $(audio).on('loadedmetadata',function(){
+            // 进度条控制
+            $(document).on('touchstart','.timeline',function(e){
+                clearInterval(jdts);
+            });
+            $(document).on('touchmove','.timeline',function(e){
+                var x = e.originalEvent.changedTouches[0].clientX-this.offsetLeft-90;
+                var X = x < 0 ? 0 : x ;
+                var W = $(this).width();
+                var place = X > W ? W : X;
+                $(this).children().css({width:(place/W).toFixed(2)*100+"%"});
+                var currentTime = (place/W).toFixed(2)*audio.duration;
+                $(".size").html(secondToMin(currentTime));
+                clearInterval(jdts);
+            });
+            $(document).on('touchend','.timeline',function(e){
+                var x = e.originalEvent.changedTouches[0].clientX-this.offsetLeft-90;
+                var X = x < 0 ? 0 : x ;
+                var W = $(this).width();
+                var place = X > W ? W : X;
+                audio.currentTime = (place/W).toFixed(2)*audio.duration;
+                if(!music.paused){
+                    jdts = setInterval(function() {
+                        var currentTime = music.currentTime;
+                        setTimeShow(currentTime);
+                    },1000);
+                };
+            });
+        }); 
+    };
+    // 设置播放时间
+    function setTimeShow(t){
+        t = Math.floor(t);
+        var playTime = secondToMin(music.currentTime);
+        $(".size").html(playTime);
+        if(music.duration>0)
+        $('.timeshow').text(secondToMin(music.duration));
+        $('.timeline').children().css({width:(t/music.duration).toFixed(4)*100+"%"})
+    };
+    // 计算时间
+    function secondToMin(s) {
+        var MM = Math.floor(s / 60);
+        var SS = s % 60;
+        if (MM < 10)
+        MM = "0" + MM;
+        if (SS < 10)
+        SS = "0" + SS;
+        var min = MM + ":" + SS;
+        return min.split('.')[0];
+    };
+    
+	$('.open').click(function(){
+    	window.location="https://ttts.besttoptoday.com/dl/bule.html";
+    });
+	$('.new-btn').click(function(){
+		window.location="https://ttts.besttoptoday.com/dl/bule.html";
+    });
+</script>
+</body>
+</html>
